@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Printer Toner Levels</title>
+</head>
+<body>
+    <h1>Printer Toner Levels</h1>
+    <div id="printers"></div>
+    <script>
+        fetch('/api/printers/')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('printers');
+                data.forEach(printer => {
+                    container.innerHTML += `
+                        <div>
+                            <h2>${printer.name}</h2>
+                            <p>IP: ${printer.ip_adress}</p>
+                            <p>Black: ${printer.toner_black}%</P>
+                            <p>Cyan: ${printer.toner_cyan}%</P>
+                            <p>Magenta: ${printer.toner_magenta}%</P>
+                            <p>Yellow: ${printer.toner_yellow}%</P>
+                        </div>
+                    `;
+                });
+            });
+    </script>
+</body>
+</html>

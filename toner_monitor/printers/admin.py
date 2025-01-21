@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Printer
 
-# Register your models here.
+# Register the Printer model
+admin.site.register(Printer)

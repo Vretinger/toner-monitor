@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-v)cs@$)(ibi4vm9=hc))b$5a^uq^2rp36l9c3%dcuv)44#v&$+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['8000-vretinger-tonermonitor-8zj5ijdptm1.ws.codeinstitute-ide.net']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-vretinger-tonermonitor-8zj5ijdptm1.ws.codeinstitute-ide.net',
+]
+
 
 
 # Application definition
