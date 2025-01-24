@@ -2,6 +2,72 @@
 <html>
 <head>
     <title>Printer Toner Levels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            margin: 0;
+        }
+        #printers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .printer-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 300px;
+            width: 100%;
+            text-align: center;
+        }
+        .printer-card h2 {
+            color: #4CAF50;
+            margin: 0 0 10px;
+        }
+        .printer-card p {
+            margin: 5px 0;
+        }
+        .toner-level {
+            font-weight: bold;
+        }
+        .low-toner {
+            color: red;
+            font-weight: bold;
+        }
+        .toner-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+        .toner-fill {
+            height: 100%;
+            border-radius: 5px;
+        }
+        .toner-fill.black { background-color: black; }
+        .toner-fill.cyan { background-color: cyan; }
+        .toner-fill.magenta { background-color: magenta; }
+        .toner-fill.yellow { background-color: yellow; }
+        .toner-fill.low {
+            background-color: red !important;
+        }
+    </style>
 </head>
 <body>
     <h1>Printer Toner Levels</h1>
@@ -12,14 +78,33 @@
             .then(data => {
                 const container = document.getElementById('printers');
                 data.forEach(printer => {
+                    const lowBlack = printer.toner_black < 5;
+                    const lowCyan = printer.toner_cyan < 5;
+                    const lowMagenta = printer.toner_magenta < 5;
+                    const lowYellow = printer.toner_yellow < 5;
+
                     container.innerHTML += `
-                        <div>
+                        <div class="printer-card">
                             <h2>${printer.name}</h2>
-                            <p>IP: ${printer.ip_address}</p>
-                            <p>Black: ${printer.toner_black}%</P>
-                            <p>Cyan: ${printer.toner_cyan}%</P>
-                            <p>Magenta: ${printer.toner_magenta}%</P>
-                            <p>Yellow: ${printer.toner_yellow}%</P>
+                            <p><strong>IP:</strong> ${printer.ip_address}</p>
+                            <div>
+                                <p>Black: <span class="toner-level ${lowBlack ? 'low-toner' : ''}">${printer.toner_black}%</span></p>
+                                <div class="toner-bar">
+                                    <div class="toner-fill black ${lowBlack ? 'low' : ''}" style="width: ${printer.toner_black}%;"></div>
+                                </div>
+                                <p>Cyan: <span class="toner-level ${lowCyan ? 'low-toner' : ''}">${printer.toner_cyan}%</span></p>
+                                <div class="toner-bar">
+                                    <div class="toner-fill cyan ${lowCyan ? 'low' : ''}" style="width: ${printer.toner_cyan}%;"></div>
+                                </div>
+                                <p>Magenta: <span class="toner-level ${lowMagenta ? 'low-toner' : ''}">${printer.toner_magenta}%</span></p>
+                                <div class="toner-bar">
+                                    <div class="toner-fill magenta ${lowMagenta ? 'low' : ''}" style="width: ${printer.toner_magenta}%;"></div>
+                                </div>
+                                <p>Yellow: <span class="toner-level ${lowYellow ? 'low-toner' : ''}">${printer.toner_yellow}%</span></p>
+                                <div class="toner-bar">
+                                    <div class="toner-fill yellow ${lowYellow ? 'low' : ''}" style="width: ${printer.toner_yellow}%;"></div>
+                                </div>
+                            </div>
                         </div>
                     `;
                 });
