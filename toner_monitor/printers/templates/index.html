@@ -78,31 +78,37 @@
             .then(data => {
                 const container = document.getElementById('printers');
                 data.forEach(printer => {
-                    const lowBlack = printer.toner_black < 5;
-                    const lowCyan = printer.toner_cyan < 5;
-                    const lowMagenta = printer.toner_magenta < 5;
-                    const lowYellow = printer.toner_yellow < 5;
+                    // Normalize toner levels: set any value below 0 to 0
+                    const tonerBlack = Math.max(0, printer.toner_black);
+                    const tonerCyan = Math.max(0, printer.toner_cyan);
+                    const tonerMagenta = Math.max(0, printer.toner_magenta);
+                    const tonerYellow = Math.max(0, printer.toner_yellow);
+
+                    const lowBlack = tonerBlack < 5;
+                    const lowCyan = tonerCyan < 5;
+                    const lowMagenta = tonerMagenta < 5;
+                    const lowYellow = tonerYellow < 5;
 
                     container.innerHTML += `
                         <div class="printer-card">
                             <h2>${printer.name}</h2>
                             <p><strong>IP:</strong> ${printer.ip_address}</p>
                             <div>
-                                <p>Black: <span class="toner-level ${lowBlack ? 'low-toner' : ''}">${printer.toner_black}%</span></p>
+                                <p>Black: <span class="toner-level ${lowBlack ? 'low-toner' : ''}">${tonerBlack}%</span></p>
                                 <div class="toner-bar">
-                                    <div class="toner-fill black ${lowBlack ? 'low' : ''}" style="width: ${printer.toner_black}%;"></div>
+                                    <div class="toner-fill black ${lowBlack ? 'low' : ''}" style="width: ${tonerBlack}%;"></div>
                                 </div>
-                                <p>Cyan: <span class="toner-level ${lowCyan ? 'low-toner' : ''}">${printer.toner_cyan}%</span></p>
+                                <p>Cyan: <span class="toner-level ${lowCyan ? 'low-toner' : ''}">${tonerCyan}%</span></p>
                                 <div class="toner-bar">
-                                    <div class="toner-fill cyan ${lowCyan ? 'low' : ''}" style="width: ${printer.toner_cyan}%;"></div>
+                                    <div class="toner-fill cyan ${lowCyan ? 'low' : ''}" style="width: ${tonerCyan}%;"></div>
                                 </div>
-                                <p>Magenta: <span class="toner-level ${lowMagenta ? 'low-toner' : ''}">${printer.toner_magenta}%</span></p>
+                                <p>Magenta: <span class="toner-level ${lowMagenta ? 'low-toner' : ''}">${tonerMagenta}%</span></p>
                                 <div class="toner-bar">
-                                    <div class="toner-fill magenta ${lowMagenta ? 'low' : ''}" style="width: ${printer.toner_magenta}%;"></div>
+                                    <div class="toner-fill magenta ${lowMagenta ? 'low' : ''}" style="width: ${tonerMagenta}%;"></div>
                                 </div>
-                                <p>Yellow: <span class="toner-level ${lowYellow ? 'low-toner' : ''}">${printer.toner_yellow}%</span></p>
+                                <p>Yellow: <span class="toner-level ${lowYellow ? 'low-toner' : ''}">${tonerYellow}%</span></p>
                                 <div class="toner-bar">
-                                    <div class="toner-fill yellow ${lowYellow ? 'low' : ''}" style="width: ${printer.toner_yellow}%;"></div>
+                                    <div class="toner-fill yellow ${lowYellow ? 'low' : ''}" style="width: ${tonerYellow}%;"></div>
                                 </div>
                             </div>
                         </div>
